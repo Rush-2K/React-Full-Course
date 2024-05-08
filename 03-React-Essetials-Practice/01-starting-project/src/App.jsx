@@ -5,25 +5,25 @@ import Results from './components/Results.jsx';
 
 function App() {
   const [userInput, setUserInput] = useState({
-    initialInvestment: 1000,
+    initialInvestment: 10000,
     annualInvesment: 1200,
     expectedReturn: 6,
-    duration: 10
+    duration: 10,
   });
 
   function handleChange(inputIdentifier, newValue) {
-    setUserInput(prevUserInput => {
+    setUserInput((prevUserInput) => {
         return {
             ...prevUserInput, 
             [inputIdentifier]: +newValue,
-        }
+        };
     });
   }
 
   return (
     <>
       <Header />
-      <UserInput onChangeInput={handleChange} userInput={userInput}/>
+      <UserInput onChangeInput={handleChange} input={userInput}/>
       <Results input={userInput} />
     </>
   );
