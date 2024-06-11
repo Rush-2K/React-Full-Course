@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 import Places from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log('geolocation works')
+      // console.log('geolocation works')
       const sortedPlaces = sortPlacesByDistance(
         AVAILABLE_PLACES, 
         position.coords.latitude, 
@@ -52,7 +52,7 @@ function App() {
     
     const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
     if(storedIds.indexOf(id) === -1){
-      console.log('1')
+      // console.log('1')
       localStorage.setItem(
         'selectedPlaces', 
         JSON.stringify([id, ...storedIds])
@@ -60,15 +60,27 @@ function App() {
     }
   }
 
-  function handleRemovePlace() {
+  // function handleRemovePlace() {
+  //   setPickedPlaces((prevPickedPlaces) =>
+  //     prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
+  //   );
+  //   setModalIsOpen(false)
+
+  //   const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
+  //   localStorage.setItem('selectedPlaces', JSON.stringify(storedIds.filter((id) => id !== selectedPlace.current)));
+  // }
+
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
-    setModalIsOpen(false)
+    // setModalIsOpen(false)
 
     const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
     localStorage.setItem('selectedPlaces', JSON.stringify(storedIds.filter((id) => id !== selectedPlace.current)));
-  }
+}, [])
+
+  
 
   return (
     <>
