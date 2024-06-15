@@ -2,7 +2,7 @@ import { useState, useCallback } from "react"
 
 import QUESTIONS from '../question.js';
 import Question from "./Question.jsx";
-import quizCompleteImg from '../assets/quiz-complete.png'
+import Summary from "./Summary.jsx";
 
 
 export default function Quiz() {
@@ -23,12 +23,7 @@ export default function Quiz() {
     const handleSkipAnswer = useCallback(() => {handleSelectAnswer(null)}, [handleSelectAnswer])
 
     if(quizIsComplete){
-        return (
-        <div id="summary">
-            <img src={quizCompleteImg} alt="Trophy icon"/>
-            <h2>Quiz is completed</h2>
-        </div>
-        )
+        return <Summary userAnswers={userAnswers}/>
     }
 
     return (
