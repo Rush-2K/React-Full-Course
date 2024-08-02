@@ -4,8 +4,8 @@ import classes from './Counter.module.css';
 
 const Counter = () => {
   const dispatch = useDispatch(); //will dispatch an action against our redux store
-  const counter = useSelector(state => state.counter); //retrieve piece of data of the state
-  const show = useSelector(state => state.showCounter);
+  const counter = useSelector(state => state.counter.counter); //retrieve piece of data of the state
+  const show = useSelector(state => state.counter.showCounter);
 
   const incrementHandler = () => {
     dispatch(counterActions.increment())
