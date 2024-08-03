@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'; //allow us to select a part of our state manage by the store
-import { counterActions } from '../store/index';
+import { counterActions } from '../store/counter';
 import classes from './Counter.module.css';
 
 const Counter = () => {
