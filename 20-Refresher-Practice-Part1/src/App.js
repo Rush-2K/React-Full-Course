@@ -3,10 +3,16 @@ import { useSelector } from 'react-redux';
 import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
+import { useEffect } from 'react';
 
 function App() {
   //state automatically
   const showCart = useSelector(state => state.ui.cartIsVisible);
+
+  const cart = useSelector(state => state.cart)
+  useEffect(() => {
+    fetch('https://react-http-5e77e-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json', { method: 'PUT', body: JSON.stringify(cart) })
+  }, [cart])
   
   return (
     <Layout>
