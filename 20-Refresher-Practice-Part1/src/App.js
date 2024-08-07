@@ -6,7 +6,8 @@ import Products from './components/Shop/Products';
 import { Fragment, useEffect } from 'react';
 import { uiActions } from './store/ui-slice';
 import Notification from './components/UI/Notification';
-import { sendCartData } from './store/cart-slice';
+import { sendCartData } from './store/cart-action';
+import { fetchCartData } from './store/cart-action';
 
 let isInitial = true;
 
@@ -16,6 +17,11 @@ function App() {
   const showCart = useSelector(state => state.ui.cartIsVisible);
   const cart = useSelector(state => state.cart)
   const notification = useSelector(state => state.ui.notification)
+
+  //dispatch as dependencies as completeness it will not rerun
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
 
   useEffect(() => {
     // const sendCartData = async () => {
@@ -47,7 +53,11 @@ function App() {
       return;
     }
 
-    dispatch(sendCartData(cart));
+    if(cart.changed){
+      dispatch(sendCartData(cart));
+    }
+
+    
 
     // sendCartData().catch((error) => {
     //   dispatch(uiActions.showNotification({
