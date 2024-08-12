@@ -5,6 +5,13 @@ const eventRoutes = require('./routes/events');
 const authRoutes = require('./routes/auth');
 
 const app = express();
+const cors = require('cors');
+const PORT = 5038;
+
+app.use(cors());
+app.listen(PORT, () => {
+  console.log('Server is running on port ', PORT)
+})
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -24,4 +31,4 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: message });
 });
 
-app.listen(8080);
+// app.listen(8080);
