@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6"
+  },
   "scripts": {
     "start": "node app.js"
   },
