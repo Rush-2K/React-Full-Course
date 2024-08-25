@@ -4,7 +4,8 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import Header from '../Header.jsx';
 import { deleteEvent, fetchEvent, queryClient } from '../../util/https.js';
 import { useState } from 'react';
-import Modal from '../UI/Modal.jsx'
+import Modal from '../UI/Modal.jsx';
+import ErrorBlock from '../UI/ErrorBlock.jsx';
 
 export default function EventDetails() {
   const [isDeleting, setIsDeleting] = useState();
