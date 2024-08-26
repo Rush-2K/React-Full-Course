@@ -1,9 +1,9 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 import Modal from '../UI/Modal.jsx';
 import EventForm from './EventForm.jsx';
-import { fetchEvent } from '../../util/https.js';
+import { fetchEvent, updateEvent, queryClient } from '../../util/https.js';
 import LoadingIndicator from '../UI/LoadingIndicator.jsx';
 import ErrorBlock from '../UI/ErrorBlock.jsx';
 
@@ -16,7 +16,30 @@ export default function EditEvent() {
     queryFn: ({signal}) => fetchEvent({signal, id})
   })
 
-  function handleSubmit(formData) {}
+  const { mutate } = useMutation({
+    mutationFn: updateEvent,
+    onMutate: async (data) => {         //onMutate is called right after we call mutate, manipulate the stored data(cache)
+      const newEvent = data.event;
+
+      await queryClient.cancelQueries({queryKey: ['events', params.id]})
+      const previousEvent = queryClient.getQueryData(['events', params.id]);   //
+
+      queryClient.setQueryData(['events', params.id], newEvent)
+
+      return { previousEvent: previousEvent }
+    },
+    onError:(error, data, context) => {   //will be executed if the updateEvent mutation has error
+      queryClient.setQueryData(['events', params.id], context.previousEvent)
+    },
+    onSettled: () => {    //will be execute no matter if the mutation is fail or succeed
+      queryClient.invalidateQueries(['events', params.id]);
+    }
+  });
+
+  function handleSubmit(formData) {
+    mutate({id: params.id, event: formData});
+    navigate('../');
+  }
 
   function handleClose() {
     navigate('../');
