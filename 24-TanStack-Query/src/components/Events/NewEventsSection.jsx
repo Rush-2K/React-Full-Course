@@ -7,8 +7,8 @@ import { fetchEvents } from '../../util/https.js';
 
 export default function NewEventsSection() {
   const { data, isPending, isError, error } = useQuery({      //there's a lot of data that can be fetch
-    queryKey: ['events'],     //every request should have querykey to cache the data
-    queryFn: fetchEvents,     //define the actual code that will define the request
+    queryKey: ['events', { max: 3 }],     //every request should have querykey to cache the data
+    queryFn: ({signal, queryKey}) => fetchEvents({signal, ...queryKey[1]}),     //define the actual code that will define the request
     staleTime: 5000          //within that period it will use cache data, after that it will send the request back
     // gcTime: 3000              //determines how long the data is kept in cache
   });
