@@ -1,5 +1,5 @@
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('meals.db');
+const sql = require('better-sqlite3');
+const db = sql('meals.db');
 
 const dummyMeals = [
   {
@@ -164,59 +164,36 @@ const dummyMeals = [
   },
 ];
 
-
-
-// Create the table
-db.serialize(() => {
-    db.prepare(`DELETE FROM meals`).run();
-    
-  db.run(`
-    CREATE TABLE IF NOT EXISTS meals (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      slug TEXT NOT NULL UNIQUE,
-      title TEXT NOT NULL,
-      image TEXT NOT NULL,
-      summary TEXT NOT NULL,
-      instructions TEXT NOT NULL,
-      creator TEXT NOT NULL,
-      creator_email TEXT NOT NULL
+db.prepare(`
+   CREATE TABLE IF NOT EXISTS meals (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       slug TEXT NOT NULL UNIQUE,
+       title TEXT NOT NULL,
+       image TEXT NOT NULL,
+       summary TEXT NOT NULL,
+       instructions TEXT NOT NULL,
+       creator TEXT NOT NULL,
+       creator_email TEXT NOT NULL
     )
-  `);
+`).run();
 
-  // Prepare the insert statement
+async function initData() {
   const stmt = db.prepare(`
-    INSERT INTO meals (slug, title, image, summary, instructions, creator, creator_email)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `);
+      INSERT INTO meals VALUES (
+         null,
+         @slug,
+         @title,
+         @image,
+         @summary,
+         @instructions,
+         @creator,
+         @creator_email
+      )
+   `);
 
-  // Insert each meal asynchronously
-  dummyMeals.forEach((meal) => {
-    stmt.run(
-      meal.slug,
-      meal.title,
-      meal.image,
-      meal.summary,
-      meal.instructions,
-      meal.creator,
-      meal.creator_email
-    );
-  });
-
-  // Finalize the statement
-  stmt.finalize((err) => {
-    if (err) {
-      console.error("Error finalizing statement:", err);
-    } else {
-      console.log("All meals inserted successfully.");
-    }
-  });
-});
-
-// Close the database connection
-db.close((err) => {
-  if (err) {
-    console.error("Error closing the database:", err.message);
-  } else {
-    console.log("Database connection closed.");
+  for (const meal of dummyMeals) {
+    stmt.run(meal);
   }
-});
+}
+
+initData();
