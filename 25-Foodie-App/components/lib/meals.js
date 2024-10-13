@@ -10,8 +10,8 @@ const db = new sqlite3.Database('meals.db', (err) => {
 
 export async function getMeals() {
   // Simulate a delay
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+  throw new Error('Loading meals failed');
   // Use a Promise to handle the database query asynchronously
   return new Promise((resolve, reject) => {
     db.all('SELECT * FROM meals', [], (err, rows) => {
