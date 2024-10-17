@@ -291,6 +291,7 @@ main {
   margin: 0;
 }
 
+
 .new-challenge-actions button,
 .button {
   cursor: pointer;
@@ -314,10 +315,23 @@ main {
   width: 30rem;
   max-width: 90%;
   z-index: 10;
+  animation: slide-up-fade-in 0.3s ease-out forwards;
 }
 
 .modal h2 {
   margin-top: 0;
+}
+
+@keyframes slide-up-fade-in {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .new-challenge-actions {
