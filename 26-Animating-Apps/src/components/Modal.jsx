@@ -13,7 +13,8 @@ export default function Modal({ title, children, onClose }) {
         }} //for defining and reusing animations
         initial="hidden" //define initial state of element when element is added to the DOM
         animate="visible"
-        exit="hidden" //exit state when element is remove from the DOM
+        // exit="hidden" //exit state when element is remove from the DOM 
+        //*had to comment exit prop bcs causing some bug, cannot close modal properly
         open 
         className="modal"
       >
