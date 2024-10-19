@@ -1,12 +1,20 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 export default function SearchableList({items, children, itemKeyFn}) {
+    const lastChange = useRef();
     const [searchTerm, setSearchTerm] = useState('');
 
     const searchResults = items.filter(item => JSON.stringify(item).toLowerCase().includes(searchTerm.toLowerCase()));
 
     function handleChange(event) {
-        setSearchTerm(event.target.value)
+        if(lastChange.current) {
+            clearTimeout(lastChange.current);   //clear the ongoing timer
+        }
+
+        lastChange.current = setTimeout(() => {
+            lastChange.current = null; //remove the ref identifier
+            setSearchTerm(event.target.value);
+        }, 500); //store the timer id in the ref
     }
 
     return (
