@@ -4,7 +4,7 @@ let globalState = {};
 let listeners = []; //list of function that can be used to call and update the components that are using this hook
 let actions = {};
 
-export const useStore = () => {
+export const useStore = (shouldListen = true) => {
     const setState = useState(globalState)[1];
 
     const dispatch = (actionIdentifier, payload) => {
@@ -17,12 +17,18 @@ export const useStore = () => {
     }
 
     useEffect(() => {
+        if(shouldListen){
+            listeners.push(setState);
+        }
         listeners.push(setState)
 
         return () => {
-            listeners = listeners.filter(li => li !== setState);
+            if(shouldListen){
+                listeners = listeners.filter(li => li !== setState);
+            }
+            
         }
-    }, [setState])
+    }, [setState, shouldListen])
     
     return [globalState, dispatch];
 };

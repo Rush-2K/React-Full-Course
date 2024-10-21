@@ -7,7 +7,7 @@ import { toggleFav } from '../../store/actions/products';
 import { ProductsContext } from '../../context/products-context';
 
 const ProductItem = props => {
-  const dispatch = useStore()[1]
+  const dispatch = useStore(false)[1]
 
   // const toggleFav = useContext(ProductsContext).toggleFav;
 
