@@ -1,24 +1,24 @@
-import { ENETDOWN } from "constants";
 import { useRef } from "react";
+import classes from './NewTodo.module.css';
 
-const NewTodo = () => {
+const NewTodo: React.FC<{onAddTodo: (text: string) => void}> = (props) => { //define onAddTodo as a function
     const todoTextInputRef = useRef<HTMLInputElement>(null); //null is the starting/initial value
 
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault(); 
 
-        const enteredText = todoTextInputRef.current?.value;
+        const enteredText = todoTextInputRef.current!.value;
 
-        if(enteredText?.trim().length === 0) {
+        if(enteredText.trim().length === 0) {
             //throw an error
             return;
         }
 
-        
+        props.onAddTodo(enteredText);
     }
 
     return (
-        <form onSubmit={submitHandler}>
+        <form onSubmit={submitHandler} className={classes.form}>
             <label htmlFor="text">Todo text</label>
             <input type="text" id="text" ref={todoTextInputRef}/>
             <button>Add Todo</button>
